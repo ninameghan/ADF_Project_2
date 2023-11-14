@@ -10,4 +10,14 @@ class AdfProject2ApplicationTests {
     void contextLoads() {
     }
 
+    //TODO: test find property by ID endpoint if ID exists
+
+    //TODO: test find property by ID endpoint if ID not exists
+
+    //TODO: delete tenant by Id if ID exists and authorised
+
+    //TODO: delete tenant by Id if authenticated but not authorised
+
+    //TODO: delete tenant by Id if not authenticated
+
 }
