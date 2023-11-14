@@ -21,10 +21,14 @@ public class Tenant {
     private String tenantEmail;
     @Column(name = "phoneNumber", unique = true, nullable = false)
     private String tenantPhoneNumber;
+    @ManyToOne
+    @JoinColumn(name = "propertyId")
+    private Property tenantPropertyId;
 
-    public Tenant(String tenantName, String tenantEmail, String tenantPhoneNumber) {
+    public Tenant(String tenantName, String tenantEmail, String tenantPhoneNumber, Property tenantPropertyId) {
         this.tenantName = tenantName;
         this.tenantEmail = tenantEmail;
         this.tenantPhoneNumber = tenantPhoneNumber;
+        this.tenantPropertyId = tenantPropertyId;
     }
 }
