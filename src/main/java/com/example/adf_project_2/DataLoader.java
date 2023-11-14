@@ -17,9 +17,10 @@ public class DataLoader implements CommandLineRunner {
     private IUserRepository userRepository;
     private IPropertyRepository propertyRepository;
 
-    public DataLoader(ITenantRepository tenantRepository, IUserRepository userRepository) {
+    public DataLoader(ITenantRepository tenantRepository, IUserRepository userRepository, IPropertyRepository propertyRepository) {
         this.tenantRepository = tenantRepository;
         this.userRepository = userRepository;
+        this.propertyRepository = propertyRepository;
     }
 
     @Override
