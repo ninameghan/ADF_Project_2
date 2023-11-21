@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Profile("dev")
 @Component
 public class DataLoader implements CommandLineRunner {
-    private ITenantRepository tenantRepository;
-    private IUserRepository userRepository;
-    private IPropertyRepository propertyRepository;
+    private final ITenantRepository tenantRepository;
+    private final IUserRepository userRepository;
+    private final IPropertyRepository propertyRepository;
 
     public DataLoader(ITenantRepository tenantRepository, IUserRepository userRepository, IPropertyRepository propertyRepository) {
         this.tenantRepository = tenantRepository;
