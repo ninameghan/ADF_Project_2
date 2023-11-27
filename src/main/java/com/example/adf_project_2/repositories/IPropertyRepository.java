@@ -3,8 +3,10 @@ package com.example.adf_project_2.repositories;
 import com.example.adf_project_2.entities.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IPropertyRepository extends JpaRepository<Property, Integer> {
 
@@ -13,4 +15,7 @@ public interface IPropertyRepository extends JpaRepository<Property, Integer> {
 
     @Query("select p from Property p where size(p.tenants) < p.propertyCapacity")
     List<Property> findAllPropertiesWithAvailability();
+
+    @Query("select new com.example.adf_project_2.repositories.PropertyAndTenantCount(p.propertyId, size(p.tenants)) from Property p where p.propertyId=:id")
+    Optional<PropertyAndTenantCount> findPropertyAndTenantCount(@Param("id") int propertyId);
 }

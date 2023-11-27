@@ -3,6 +3,7 @@ package com.example.adf_project_2.controllers;
 import com.example.adf_project_2.controllers.handlers.ResourceNotFoundException;
 import com.example.adf_project_2.entities.Property;
 import com.example.adf_project_2.repositories.IPropertyRepository;
+import com.example.adf_project_2.repositories.PropertyAndTenantCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +53,15 @@ public class PropertyController {
     //TODO: Get total rental income of all occupied properties
 
     //TODO: Get a property by ID + number of tenants
+    @GetMapping("/{id}/tenantcount")
+    PropertyAndTenantCount findByIdWithTenantCount(@PathVariable("id") int propertyId){
+        Optional<PropertyAndTenantCount> propertyOp = propertyRepository.findPropertyAndTenantCount(propertyId);
+        if (propertyOp.isPresent()){
+            return propertyOp.get();
+        }
+        throw new ResourceNotFoundException("Property with ID: " + propertyId + " was not found!");
 
+    }
     //TODO: Delete property
 
     //TODO: Change rent of property
