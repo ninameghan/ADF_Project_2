@@ -44,4 +44,10 @@ public class ExceptionHandlers {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse("Body of the HTTP request was empty!", LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
+
+    @ExceptionHandler(PropertyNoAvailabilityException.class)
+    public ResponseEntity<ApiErrorResponse> handlePropertyNoAvailability(PropertyNoAvailabilityException ex){
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse(ex.getMessage(), LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+    }
 }

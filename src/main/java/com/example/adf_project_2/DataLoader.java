@@ -34,7 +34,7 @@ public class DataLoader implements CommandLineRunner {
 
         // Generating sample Tenant data
         Tenant tenant1 = tenantRepository.save(new Tenant("John Doe", "john.doe@email.com", "555-1234", property1));
-        Tenant tenant2 = tenantRepository.save(new Tenant("Jane Smith", "jane.smith@email.com", "555-5678", property2));
+        Tenant tenant2 = tenantRepository.save(new Tenant("Jane Smith", "jane.smith@email.com", "555-5678", property1));
         Tenant tenant3 = tenantRepository.save(new Tenant("Bob Johnson", "bob.johnson@email.com", "555-9876", property3));
         Tenant tenant4 = tenantRepository.save(new Tenant("Alice Williams", "alice@email.com", "555-1111", property4));
         Tenant tenant5 = tenantRepository.save(new Tenant("Charlie Brown", "charlie@email.com", "555-2222", property5));

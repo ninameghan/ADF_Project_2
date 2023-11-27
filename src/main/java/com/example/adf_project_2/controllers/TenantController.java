@@ -2,6 +2,7 @@ package com.example.adf_project_2.controllers;
 
 import com.example.adf_project_2.controllers.dtos.NewPropertyDTO;
 import com.example.adf_project_2.controllers.dtos.NewTenantDTO;
+import com.example.adf_project_2.controllers.handlers.PropertyNoAvailabilityException;
 import com.example.adf_project_2.controllers.handlers.ResourceNotFoundException;
 import com.example.adf_project_2.entities.Property;
 import com.example.adf_project_2.entities.Tenant;
@@ -56,27 +57,29 @@ public class TenantController {
         }
     }
 
-    //TODO: Add new tenant and move into a property (subject to capacity)
-    // if the house is full, tenant should not be added to database
-
     // ENDPOINT: localhost:8080/properties
     // localhost:8080/properties with JSON
     //{
     //  "tenantName": "John Doe",
     //  "tenantEmail": "john.doe@example.com",
     //  "tenantPhoneNumber": "123-456-7890",
-    //  "propertyId": 1
+    //  "propertyId": 2
     //}
     // returns 200 OK with object
-    // Repeating this returns 409 CONFLICT with error message
+    // Repeating this returns 409 CONFLICT with error message (tenant with email or phone number already exists)
     // Posting without JSON or invalid JSON returns 400 BAD REQUEST with error message
-    // Posting with "propertyId": 6 returns 404 NOT FOUND with error message
+    // Posting with "propertyId": 1 returns 400 BAD REQUEST with error message (property has no availability)
+    // Posting with "propertyId": 6 returns 404 NOT FOUND with error message (property does not exist)
     @PostMapping({"/", ""})
     Tenant addNewTenant(@Valid @RequestBody NewTenantDTO newTenantDTO) {
         Optional<Property> propertyOp = propertyRepository.findById(newTenantDTO.propertyId());
         if (propertyOp.isPresent()){
-            return tenantRepository.save(new Tenant(newTenantDTO.tenantName(),
-                    newTenantDTO.tenantEmail(), newTenantDTO.tenantPhoneNumber(), propertyOp.get()));
+            if (propertyRepository.propertyHasAvailability(newTenantDTO.propertyId())){
+                return tenantRepository.save(new Tenant(newTenantDTO.tenantName(),
+                        newTenantDTO.tenantEmail(), newTenantDTO.tenantPhoneNumber(), propertyOp.get()));
+            } else {
+                throw new PropertyNoAvailabilityException("Property with ID " + newTenantDTO.propertyId() + " has no availability!");
+            }
         }
         throw new ResourceNotFoundException("Property with ID " + newTenantDTO.propertyId() + " does not exist!");
     }

@@ -17,6 +17,9 @@ public interface IPropertyRepository extends JpaRepository<Property, Integer> {
     @Query("select p from Property p where size(p.tenants) < p.propertyCapacity")
     List<Property> findAllPropertiesWithAvailability();
 
+    @Query("select case when (size(p.tenants) < p.propertyCapacity) then true else false end from Property p where p.propertyId=:id")
+    boolean propertyHasAvailability(@Param("id") int propertyId);
+
     @Query("select new com.example.adf_project_2.repositories.PropertyAndTenantCount(p.propertyId, size(p.tenants)) from Property p where p.propertyId=:id")
     Optional<PropertyAndTenantCount> findPropertyAndTenantCount(@Param("id") int propertyId);
 
