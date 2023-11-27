@@ -1,6 +1,6 @@
 package com.example.adf_project_2.controllers;
 
-import com.example.adf_project_2.controllers.dtos.NewPropertyDTO;
+import com.example.adf_project_2.controllers.dtos.MoveTenantDTO;
 import com.example.adf_project_2.controllers.dtos.NewTenantDTO;
 import com.example.adf_project_2.controllers.handlers.PropertyNoAvailabilityException;
 import com.example.adf_project_2.controllers.handlers.ResourceNotFoundException;
@@ -28,7 +28,7 @@ public class TenantController {
 
     // ENDPOINT: localhost:8080/tenants
     @GetMapping({"/", ""})
-    List<Tenant> findAll(){
+    List<Tenant> findAll() {
         return tenantRepository.findAll();
     }
 
@@ -36,9 +36,9 @@ public class TenantController {
     // localhost:8080/tenants/1 returns 200 OK with object
     // localhost:8080/tenants/100 returns 404 NOT FOUND with error message
     @GetMapping("/{id}")
-    Tenant findById(@PathVariable("id") int tenantId){
+    Tenant findById(@PathVariable("id") int tenantId) {
         Optional<Tenant> tenantOp = tenantRepository.findById(tenantId);
-        if (tenantOp.isPresent()){
+        if (tenantOp.isPresent()) {
             return tenantOp.get();
         }
         throw new ResourceNotFoundException("Tenant with ID: " + tenantId + " was not found!");
@@ -49,16 +49,16 @@ public class TenantController {
     // localhost:8080/tenants/100 returns 404 NOT FOUND with error message
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteById(@PathVariable("id") int tenantId){
-        if (tenantRepository.existsById(tenantId)){
+    void deleteById(@PathVariable("id") int tenantId) {
+        if (tenantRepository.existsById(tenantId)) {
             tenantRepository.deleteById(tenantId);
         } else {
             throw new ResourceNotFoundException("Tenant with ID: " + tenantId + " was not found!");
         }
     }
 
-    // ENDPOINT: localhost:8080/properties
-    // localhost:8080/properties with JSON
+    // ENDPOINT: localhost:8080/tenants
+    // localhost:8080/tenants with JSON
     //{
     //  "tenantName": "John Doe",
     //  "tenantEmail": "john.doe@example.com",
@@ -73,8 +73,8 @@ public class TenantController {
     @PostMapping({"/", ""})
     Tenant addNewTenant(@Valid @RequestBody NewTenantDTO newTenantDTO) {
         Optional<Property> propertyOp = propertyRepository.findById(newTenantDTO.propertyId());
-        if (propertyOp.isPresent()){
-            if (propertyRepository.propertyHasAvailability(newTenantDTO.propertyId())){
+        if (propertyOp.isPresent()) {
+            if (propertyRepository.propertyHasAvailability(newTenantDTO.propertyId())) {
                 return tenantRepository.save(new Tenant(newTenantDTO.tenantName(),
                         newTenantDTO.tenantEmail(), newTenantDTO.tenantPhoneNumber(), propertyOp.get()));
             } else {
@@ -84,5 +84,31 @@ public class TenantController {
         throw new ResourceNotFoundException("Property with ID " + newTenantDTO.propertyId() + " does not exist!");
     }
 
-    //TODO: Move a tenant
+    // ENDPOINT: localhost:8080/tenants/{id}/move
+    // localhost:8080/tenants/7/move with JSON
+    //{
+    //    "newPropertyId": 3
+    //}
+    // returns 200 OK with object
+    // Posting without JSON or invalid JSON returns 400 BAD REQUEST with error message
+    // Posting with "newPropertyId": 6 returns 404 NOT FOUND with error message (property does not exist)
+    // Posting with "propertyId": 1 returns 400 BAD REQUEST with error message (property has no availability)
+    // Posting with "propertyId": 1 returns 400 BAD REQUEST with error message (property has no availability)
+    // localhost:8080/tenants/100/move returns 404 NOT FOUND with error message (tenant does not exist)
+    @PatchMapping("/{id}/move")
+    Tenant moveTenant(@Valid @RequestBody MoveTenantDTO moveTenantDTO, @PathVariable("id") int tenantId) {
+        if (tenantRepository.existsById(tenantId)) {
+            Optional<Property> propertyOp = propertyRepository.findById(moveTenantDTO.newPropertyId());
+            if (propertyOp.isPresent()) {
+                if (propertyRepository.propertyHasAvailability(moveTenantDTO.newPropertyId())) {
+                    tenantRepository.moveTenant(tenantId, propertyOp.get());
+                    return tenantRepository.findById(tenantId).get();
+                } else {
+                    throw new PropertyNoAvailabilityException("Property with ID " + moveTenantDTO.newPropertyId() + " has no availability!");
+                }
+            }
+            throw new ResourceNotFoundException("Property with ID " + moveTenantDTO.newPropertyId() + " does not exist!");
+        }
+        throw new ResourceNotFoundException("Tenant with ID " + tenantId + " does not exist!");
+    }
 }
