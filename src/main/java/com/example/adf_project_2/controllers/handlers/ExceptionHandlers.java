@@ -41,7 +41,7 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiErrorResponse> handleMissingBody(){
-        ApiErrorResponse apiErrorResponse = new ApiErrorResponse("Body of the HTTP request was empty!", LocalDateTime.now());
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse("JSON body was malformed!", LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
     }
 

@@ -2,7 +2,9 @@ package com.example.adf_project_2.repositories;
 
 import com.example.adf_project_2.entities.Property;
 import com.example.adf_project_2.entities.Tenant;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -28,4 +30,9 @@ public interface IPropertyRepository extends JpaRepository<Property, Integer> {
 
     @Query("select new com.example.adf_project_2.repositories.PropertyAndTotalRentalIncome(p.propertyId, (p.propertyMonthlyCost * size(p.tenants))) from Property p where size(p.tenants) > 0")
     List<PropertyAndTotalRentalIncome> findTotalRentalIncomesOfOccupiedProperties();
+
+    @Modifying
+    @Transactional
+    @Query("update Property p set p.propertyMonthlyCost=:newRent where p.propertyId=:id")
+    void updatePropertyRent(@Param("id") int propertyId, @Param("newRent") double newRent);
 }

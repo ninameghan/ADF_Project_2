@@ -1,6 +1,7 @@
 package com.example.adf_project_2.controllers;
 
 import com.example.adf_project_2.controllers.dtos.NewPropertyDTO;
+import com.example.adf_project_2.controllers.dtos.NewRentDTO;
 import com.example.adf_project_2.controllers.handlers.ResourceNotFoundException;
 import com.example.adf_project_2.entities.Property;
 import com.example.adf_project_2.entities.Tenant;
@@ -108,5 +109,20 @@ public class PropertyController {
                 newPropertyDTO.propertyEircode(), newPropertyDTO.propertyCapacity(), newPropertyDTO.propertyMonthlyCost()));
     }
 
-    //TODO: Change rent of property
+    // ENDPOINT: localhost:8080/properties/{id}/rent
+    // localhost:8080/properties/1/rent with JSON
+    //{
+    //    "newRent": 2000.0
+    //}
+    // returns 200 OK with object
+    // Posting without JSON or invalid JSON returns 400 BAD REQUEST with error message
+    // localhost:8080/properties/100/rent returns 404 NOT FOUND with error message
+    @PatchMapping("/{id}/rent")
+    Property updateRent(@Valid @RequestBody NewRentDTO newRentDTO, @PathVariable("id") int propertyId){
+        if (propertyRepository.existsById(propertyId)){
+            propertyRepository.updatePropertyRent(propertyId, newRentDTO.newRent());
+            return propertyRepository.findById(propertyId).get();
+        }
+        throw new ResourceNotFoundException("Property with ID: " + propertyId + " was not found!");
+    }
 }
