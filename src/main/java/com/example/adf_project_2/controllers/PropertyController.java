@@ -1,11 +1,13 @@
 package com.example.adf_project_2.controllers;
 
+import com.example.adf_project_2.controllers.dtos.NewPropertyDTO;
 import com.example.adf_project_2.controllers.handlers.ResourceNotFoundException;
 import com.example.adf_project_2.entities.Property;
 import com.example.adf_project_2.entities.Tenant;
 import com.example.adf_project_2.repositories.IPropertyRepository;
 import com.example.adf_project_2.repositories.PropertyAndTenantCount;
 import com.example.adf_project_2.repositories.PropertyAndTotalRentalIncome;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -87,6 +89,23 @@ public class PropertyController {
         } else {
             throw new ResourceNotFoundException("Property with ID: " + propertyId + " was not found!");
         }
+    }
+
+    // ENDPOINT: localhost:8080/properties
+    // localhost:8080/properties with JSON
+    // {
+    //    "propertyAddress": "123 West Street",
+    //    "propertyEircode": "D01ABCD",
+    //    "propertyCapacity": 4,
+    //    "propertyMonthlyCost": 1500.0
+    //}
+    // returns 200 OK with object
+    // Repeating this returns 409 CONFLICT with error message
+    // Posting without JSON or invalid JSON returns 400 BAD REQUEST with error message
+    @PostMapping({"/", ""})
+    Property addNewProperty(@Valid @RequestBody NewPropertyDTO newPropertyDTO) {
+        return propertyRepository.save(new Property(newPropertyDTO.propertyAddress(),
+                newPropertyDTO.propertyEircode(), newPropertyDTO.propertyCapacity(), newPropertyDTO.propertyMonthlyCost()));
     }
 
     //TODO: Change rent of property
