@@ -22,13 +22,13 @@ public class Tenant {
     @Column(name = "phoneNumber", unique = true, nullable = false)
     private String tenantPhoneNumber;
     @ManyToOne
-    @JoinColumn(name = "propertyId")
-    private Property tenantPropertyId;
+    @JoinColumn(name = "property_id", nullable = false)
+    private Property property;
 
-    public Tenant(String tenantName, String tenantEmail, String tenantPhoneNumber, Property tenantPropertyId) {
+    public Tenant(String tenantName, String tenantEmail, String tenantPhoneNumber, Property property) {
         this.tenantName = tenantName;
         this.tenantEmail = tenantEmail;
         this.tenantPhoneNumber = tenantPhoneNumber;
-        this.tenantPropertyId = tenantPropertyId;
+        this.property = property;
     }
 }

@@ -21,4 +21,15 @@ public class TenantController {
     List<Tenant> findAll(){
         return tenantRepository.findAll();
     }
+
+    //TODO: Get a tenant by ID
+
+    //TODO: Get list of tenants in a property
+
+    //TODO: Delete tenant
+
+    //TODO: Add new tenant and move into a property (subject to capacity)
+    // if the house is full, tenant should not be added to database
+
+    //TODO: Move a tenant
 }

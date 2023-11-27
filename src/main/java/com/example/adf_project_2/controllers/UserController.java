@@ -21,4 +21,6 @@ public class UserController {
     List<User> findAll(){
         return userRepository.findAll();
     }
+
+    //TODO: Add a user
 }

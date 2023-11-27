@@ -21,4 +21,16 @@ public class PropertyController {
     List<Property> findAll(){
         return propertyRepository.findAll();
     }
+
+    //TODO: Get list of all properties with availability
+
+    //TODO: Get list of all empty properties
+
+    //TODO: Get total rental income of all occupied properties
+
+    //TODO: Get a property by ID + number of tenants
+
+    //TODO: Delete property
+
+    //TODO: Change rent of property
 }
