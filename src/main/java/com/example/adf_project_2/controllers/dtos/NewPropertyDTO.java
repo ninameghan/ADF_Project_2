@@ -16,8 +16,8 @@ public record NewPropertyDTO(
         String propertyEircode,
         @Min(value = 1, message = "Property capacity must be minimum 1!")
         @NotNull(message = "Property capacity cannot be null!")
-        int propertyCapacity,
+        Integer propertyCapacity,
         @Min(value = 1, message = "Property monthly cost must be minimum 1!")
         @NotNull(message = "Property monthly cost cannot be null!")
-        double propertyMonthlyCost
+        Double propertyMonthlyCost
 ) {}
