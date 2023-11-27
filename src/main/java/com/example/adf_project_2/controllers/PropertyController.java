@@ -7,10 +7,8 @@ import com.example.adf_project_2.repositories.IPropertyRepository;
 import com.example.adf_project_2.repositories.PropertyAndTenantCount;
 import com.example.adf_project_2.repositories.PropertyAndTotalRentalIncome;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +27,8 @@ public class PropertyController {
     }
 
     // ENDPOINT: localhost:8080/properties/{id}
+    // localhost:8080/properties/1 returns 200 OK with object
+    // localhost:8080/properties/100 returns 404 NOT FOUND with error message
     @GetMapping("/{id}")
     Property findById(@PathVariable("id") int propertyId){
         Optional<Property> propertyOp = propertyRepository.findById(propertyId);
@@ -51,12 +51,16 @@ public class PropertyController {
     }
 
     // ENDPOINT: localhost:8080/properties/{id}/tenants
+    // localhost:8080/properties/1/tenants returns 200 OK with list of tenants
+    // localhost:8080/properties/100/tenants returns 200 OK with empty list
     @GetMapping("/{id}/tenants")
     List<Tenant> findAllTenantsForProperty(@PathVariable("id") int propertyId) {
         return propertyRepository.findAllTenantsForProperty(propertyId);
     }
 
     // ENDPOINT: localhost:8080/properties/{id}/tenantcount
+    // localhost:8080/properties/1/tenantcount returns 200 OK with object
+    // localhost:8080/properties/100/tenantcount returns 404 NOT FOUND with error message
     @GetMapping("/{id}/tenantcount")
     PropertyAndTenantCount findByIdWithTenantCount(@PathVariable("id") int propertyId){
         Optional<PropertyAndTenantCount> propertyOp = propertyRepository.findPropertyAndTenantCount(propertyId);
@@ -72,7 +76,18 @@ public class PropertyController {
         return propertyRepository.findTotalRentalIncomesOfOccupiedProperties();
     }
 
-    //TODO: Delete property
+    // ENDPOINT: localhost:8080/properties/{id}
+    // localhost:8080/properties/1 returns 204 NO CONTENT
+    // localhost:8080/properties/100 returns 404 NOT FOUND with error message
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteById(@PathVariable("id") int propertyId){
+        if (propertyRepository.existsById(propertyId)){
+            propertyRepository.deleteById(propertyId);
+        } else {
+            throw new ResourceNotFoundException("Property with ID: " + propertyId + " was not found!");
+        }
+    }
 
     //TODO: Change rent of property
 }
