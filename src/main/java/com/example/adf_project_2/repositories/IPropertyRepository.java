@@ -1,6 +1,7 @@
 package com.example.adf_project_2.repositories;
 
 import com.example.adf_project_2.entities.Property;
+import com.example.adf_project_2.entities.Tenant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,7 @@ public interface IPropertyRepository extends JpaRepository<Property, Integer> {
 
     @Query("select new com.example.adf_project_2.repositories.PropertyAndTenantCount(p.propertyId, size(p.tenants)) from Property p where p.propertyId=:id")
     Optional<PropertyAndTenantCount> findPropertyAndTenantCount(@Param("id") int propertyId);
+
+    @Query("select p.tenants from Property p where p.propertyId=:id")
+    List<Tenant> findAllTenantsForProperty(@Param("id") int propertyId);
 }
