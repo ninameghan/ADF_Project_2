@@ -37,7 +37,12 @@ public class PropertyController {
 
     //TODO: Get list of all properties with availability
 
-    //TODO: Get list of all empty properties
+    @GetMapping("/empty")
+    List<Property> findAllEmpty(){
+        return propertyRepository.findAllEmptyProperties();
+    }
+
+    //TODO: Get list of tenants in a property
 
     //TODO: Get total rental income of all occupied properties
 
