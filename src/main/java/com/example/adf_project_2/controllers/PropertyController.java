@@ -35,8 +35,13 @@ public class PropertyController {
         throw new ResourceNotFoundException("Property with ID: " + propertyId + " was not found!");
     }
 
-    //TODO: Get list of all properties with availability
+    // ENDPOINT: localhost:8080/properties/available
+    @GetMapping("/available")
+    List<Property> findAllAvailable(){
+        return propertyRepository.findAllPropertiesWithAvailability();
+    }
 
+    // ENDPOINT: localhost:8080/properties/empty
     @GetMapping("/empty")
     List<Property> findAllEmpty(){
         return propertyRepository.findAllEmptyProperties();

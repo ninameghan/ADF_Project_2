@@ -10,4 +10,7 @@ public interface IPropertyRepository extends JpaRepository<Property, Integer> {
 
     @Query("select p from Property p where size(p.tenants) = 0")
     List<Property> findAllEmptyProperties();
+
+    @Query("select p from Property p where size(p.tenants) < p.propertyCapacity")
+    List<Property> findAllPropertiesWithAvailability();
 }
