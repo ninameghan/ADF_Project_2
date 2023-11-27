@@ -22,4 +22,7 @@ public interface IPropertyRepository extends JpaRepository<Property, Integer> {
 
     @Query("select p.tenants from Property p where p.propertyId=:id")
     List<Tenant> findAllTenantsForProperty(@Param("id") int propertyId);
+
+    @Query("select new com.example.adf_project_2.repositories.PropertyAndTotalRentalIncome(p.propertyId, (p.propertyMonthlyCost * size(p.tenants))) from Property p where size(p.tenants) > 0")
+    List<PropertyAndTotalRentalIncome> findTotalRentalIncomesOfOccupiedProperties();
 }

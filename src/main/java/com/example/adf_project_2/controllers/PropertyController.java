@@ -5,6 +5,7 @@ import com.example.adf_project_2.entities.Property;
 import com.example.adf_project_2.entities.Tenant;
 import com.example.adf_project_2.repositories.IPropertyRepository;
 import com.example.adf_project_2.repositories.PropertyAndTenantCount;
+import com.example.adf_project_2.repositories.PropertyAndTotalRentalIncome;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,10 +64,13 @@ public class PropertyController {
             return propertyOp.get();
         }
         throw new ResourceNotFoundException("Property with ID: " + propertyId + " was not found!");
-
     }
 
-    //TODO: Get total rental income of all occupied properties
+    // ENDPOINT: localhost:8080/properties/rentalincomes
+    @GetMapping("/rentalincomes")
+    List<PropertyAndTotalRentalIncome> findTotalRentalIncomesOfOccupiedProperties(){
+        return propertyRepository.findTotalRentalIncomesOfOccupiedProperties();
+    }
 
     //TODO: Delete property
 
