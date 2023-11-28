@@ -45,7 +45,19 @@ public class Aspects {
                 + Arrays.toString(joinPoint.getArgs()) + " *****");
     }
 
-    //TODO: Logging point for all methods in all classed annotated with a particular annotation (eg. all @Controller classes)
+    //Logging point for all methods in all classed annotated @Controller
 
+    @Pointcut(value = "within(@org.springframework.stereotype.Controller *)")
+    public void allMethodsInClassesAnnotatedWithController(){}
+    @Before("allMethodsInClassesAnnotatedWithController()")
+    public void logBeforeController(JoinPoint joinPoint){
+        log.info("***** I am before " + joinPoint.getSignature().toShortString() + " with arguments "
+                + Arrays.toString(joinPoint.getArgs()) + " *****");
+    }
 
+    @After("allMethodsInClassesAnnotatedWithController()")
+    public void logAfterController(JoinPoint joinPoint) {
+        log.info("***** I am after " + joinPoint.getSignature().toShortString() + " with arguments "
+                + Arrays.toString(joinPoint.getArgs()) + " *****");
+    }
 }
