@@ -75,7 +75,7 @@ public class PropertyController {
 
     // ENDPOINT: localhost:8080/properties/rentalincomes
     @GetMapping("/rentalincomes")
-    List<PropertyAndTotalRentalIncome> findTotalRentalIncomesOfOccupiedProperties(){
+    Float findTotalRentalIncomesOfOccupiedProperties(){
         return propertyRepository.findTotalRentalIncomesOfOccupiedProperties();
     }
 

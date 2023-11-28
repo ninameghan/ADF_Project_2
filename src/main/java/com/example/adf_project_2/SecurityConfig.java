@@ -29,22 +29,21 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/tenants/**").authenticated()
-                            .requestMatchers(HttpMethod.POST, "/tenants/**").authenticated()
-                            .requestMatchers(HttpMethod.DELETE, "/tenants/**").authenticated()
-                            .requestMatchers(HttpMethod.PATCH, "/tenants/**").authenticated()
-                            .requestMatchers(HttpMethod.GET, "/properties").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/properties/**").hasRole("MANAGER")
-                            .requestMatchers(HttpMethod.DELETE, "/properties/**").hasRole("MANAGER")
-                            .requestMatchers(HttpMethod.PATCH, "/properties/**").hasRole("MANAGER")
-                            .requestMatchers(HttpMethod.GET, "/users/**").hasRole("MANAGER")
-                            .requestMatchers(HttpMethod.POST, "/users/**").hasRole("MANAGER")
-                            .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("MANAGER")
-                            .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("MANAGER")
-                            .requestMatchers("/graphql").permitAll()
-                            .anyRequest().authenticated();
-                })
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/tenants/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/tenants/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/tenants/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/tenants/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/properties").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/properties/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/properties/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PATCH, "/properties/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/users/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/users/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PATCH, "/users/**").hasRole("MANAGER")
+                        .requestMatchers("/graphql").permitAll()
+                        .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
