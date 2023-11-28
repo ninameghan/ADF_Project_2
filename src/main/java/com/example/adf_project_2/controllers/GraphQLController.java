@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class GraphQLController {
     }
 
     @MutationMapping
+    @Secured(value = {"ROLE_MANAGER", "ROLE_OFFICE"})
     Tenant createTenant(@Argument("tenantName") String tenantName, @Argument("tenantEmail") String tenantEmail,
                             @Argument("tenantPhoneNumber") String tenantPhoneNumber, @Argument("propertyId") int propertyId){
         Optional<Property> propertyOp = propertyRepository.findById(propertyId);
@@ -49,6 +51,7 @@ public class GraphQLController {
     }
 
     @MutationMapping
+    @Secured(value = "ROLE_MANAGER")
     Boolean deleteProperty(@Argument("propertyId") int propertyId){
         if (propertyRepository.existsById(propertyId)){
             propertyRepository.deleteById(propertyId);
