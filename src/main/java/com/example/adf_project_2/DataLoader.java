@@ -54,8 +54,8 @@ public class DataLoader implements CommandLineRunner {
         Tenant tenant19 = tenantRepository.save(new Tenant("Rachel Hill", "rachel@email.com", "555-6767", property4));
         Tenant tenant20 = tenantRepository.save(new Tenant("Samuel Wright", "samuel@email.com", "555-7878", property5));
 
-        User user1 = userRepository.save(new User("john.doe@email.com", "Password1", false, "Management", "555-1234", "123-45-6789"));
-        User user2 = userRepository.save(new User("jane.smith@email.com", "SecurePass123", false, "Management", "555-5678", "987-65-4321"));
-        User user3 = userRepository.save(new User("bob.johnson@email.com", "Pass123Word", true, "Office", "555-9876", "456-78-9012"));
+        User user1 = userRepository.save(new User("john.doe@email.com", "Password1", false, "MANAGER", "555-1234", "123-45-6789"));
+        User user2 = userRepository.save(new User("jane.smith@email.com", "SecurePass123", false, "MANAGER", "555-5678", "987-65-4321"));
+        User user3 = userRepository.save(new User("bob.johnson@email.com", "Pass123Word", true, "OFFICE", "555-9876", "456-78-9012"));
     }
 }
