@@ -1,6 +1,5 @@
 package com.example.adf_project_2.controllers.handlers;
 
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +48,11 @@ public class ExceptionHandlers {
     public ResponseEntity<ApiErrorResponse> handlePropertyNoAvailability(PropertyNoAvailabilityException ex){
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(ex.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorResponse);
+    }
+
+    @ExceptionHandler(UserWithEmailAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleUserAlreadyExists(){
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse("A user with this email already exists!", LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiErrorResponse);
     }
 }
