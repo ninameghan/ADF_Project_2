@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/tenants/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/tenants/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/tenants/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/properties").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/properties/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/properties/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.DELETE, "/properties/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.PATCH, "/properties/**").hasRole("MANAGER")

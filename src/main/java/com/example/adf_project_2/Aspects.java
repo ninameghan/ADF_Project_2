@@ -18,21 +18,6 @@ public class Aspects {
     // Logging point for single method
     @Pointcut(value = "execution(* com.example.adf_project_2.repositories.IUserRepository.save(..))")
     public void saveInUserRepo(){}
-    @Before("allMethodsInTenantRepo()")
-    public void logBeforeTenantRepoMethods(JoinPoint joinPoint){
-        log.info("***** I am before " + joinPoint.getSignature().toShortString() + " with arguments "
-                + Arrays.toString(joinPoint.getArgs()) + " *****");
-    }
-
-    @After("allMethodsInTenantRepo()")
-    public void logAfterTenantRepoMethods(JoinPoint joinPoint) {
-        log.info("***** I am after " + joinPoint.getSignature().toShortString() + " with arguments "
-                + Arrays.toString(joinPoint.getArgs()) + " *****");
-    }
-
-    // Logging point for all methods in a class
-    @Pointcut(value = "execution(* com.example.adf_project_2.repositories.ITenantRepository.*(..))")
-    public void allMethodsInTenantRepo(){}
     @Before("saveInUserRepo()")
     public void logBeforeSaveUserRepo(JoinPoint joinPoint){
         log.info("***** I am before " + joinPoint.getSignature().toShortString() + " with arguments "
@@ -41,6 +26,21 @@ public class Aspects {
 
     @After("saveInUserRepo()")
     public void logAfterSaveUserRepo(JoinPoint joinPoint) {
+        log.info("***** I am after " + joinPoint.getSignature().toShortString() + " with arguments "
+                + Arrays.toString(joinPoint.getArgs()) + " *****");
+    }
+
+    // Logging point for all methods in a class
+    @Pointcut(value = "execution(* com.example.adf_project_2.repositories.IPropertyRepository.*(..))")
+    public void allMethodsInTenantRepo(){}
+    @Before("allMethodsInTenantRepo()")
+    public void logBeforeTenantRepoMethods(JoinPoint joinPoint){
+        log.info("***** I am before " + joinPoint.getSignature().toShortString() + " with arguments "
+                + Arrays.toString(joinPoint.getArgs()) + " *****");
+    }
+
+    @After("allMethodsInTenantRepo()")
+    public void logAfterTenantRepoMethods(JoinPoint joinPoint) {
         log.info("***** I am after " + joinPoint.getSignature().toShortString() + " with arguments "
                 + Arrays.toString(joinPoint.getArgs()) + " *****");
     }
